@@ -1,0 +1,30 @@
+## define how many cycles are recorded
+cycles = 10 
+## define the time between cycles in milliseconds
+period = 1000  #10 seconds
+
+table = ZenTable()
+table.Name = 'Temperature Record'
+table.Columns.Add('Cycle')
+table.Columns.Add('Enabled')
+table.Columns.Add('Set Point')
+table.Columns.Add('Current Temp')
+Zen.Application.Documents.Add(table)
+
+
+for i in range(0,cycles):
+    hardwaresetting1 = Zen.Devices.ReadHardwareSetting()
+    temp2onoff = hardwaresetting1.GetParameter('MTBIncubationTemperatureChannel2', 'IsEnabled')
+    temp2setpoint = hardwaresetting1.GetParameter('MTBIncubationTemperatureChannel2', 'Position')
+    temp2measured = hardwaresetting1.GetParameter('MTBIncubationTemperatureChannel2', 'CurrentPosition')
+    
+    table.SetValue(i,0,i)
+    table.SetValue(i,1,temp2onoff)
+    table.SetValue(i,2,temp2setpoint)
+    table.SetValue(i,3,temp2measured)    
+    
+    Zen.Application.Wait(period)
+    
+
+
+
